@@ -1,4 +1,5 @@
 const Vehiculo = require("../database/schemas/vehiculo");
+require("../database/schemas/flota");
 
 const obtenerVehiculos = async (req, res) => {
   try {
@@ -48,10 +49,21 @@ const actualizarVehiculo = async (req, res) => {
   }
 };
 
+const obtenerVehiculosPorCliente = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const vehiculos = await Vehiculo.find({ clienteId: id });
+    res.status(200).send(vehiculos);
+  } catch (error) {
+    res.status(500).send({ error: "Error al obtener los vehículos del cliente" });
+  }
+};
+
 module.exports = {
   obtenerVehiculos,
   crearVehiculo,
   eliminarVehiculo,
   obtenerVehiculoPorId,
   actualizarVehiculo,
+  obtenerVehiculosPorCliente,
 };

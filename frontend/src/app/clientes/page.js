@@ -52,7 +52,11 @@ export default function ClientesPage() {
         })
           .then(res => res.json())
           .then(() => {
-            setClientes(prev => prev.filter(c => c._id !== id));
+            // Actualizar ambos estados: el filtrado y el inicial
+            const clientesActualizados = clientesInit.filter(c => c._id !== id);
+            setClientesInit(clientesActualizados);
+            setClientes(clientesActualizados);
+            
             Swal.fire("Eliminado", "Cliente eliminado correctamente", "success");
           })
           .catch(error => {
@@ -88,9 +92,6 @@ export default function ClientesPage() {
           <thead>
             <tr className="bg-black">
               <th className="p-2 border">Nombre</th>
-              <th className="p-2 border">Teléfono</th>
-              <th className="p-2 border">Email</th>
-              <th className="p-2 border">Dirección</th>
               <th className="p-2 border" colSpan="3">Acciones</th>
             </tr>
           </thead>
@@ -98,9 +99,6 @@ export default function ClientesPage() {
             {clientes.map((cliente, index) => (
               <tr key={index} className="bg-black border-b">
                 <td className="p-2">{cliente.nombre}</td>
-                <td className="p-2">{cliente.telefono || "N/A"}</td>
-                <td className="p-2">{cliente.email || "N/A"}</td>
-                <td className="p-2">{cliente.direccion || "N/A"}</td>
                 <td className="p-2">
                   <button
                     onClick={() => eliminarCliente(cliente._id, cliente)}
@@ -113,6 +111,20 @@ export default function ClientesPage() {
                   <Link href={`/clientes/${cliente._id}/editar`}>
                     <button className="bg-green-600 hover:bg-green-700 text-white font-bold py-1 px-2 rounded w-full">
                       Editar
+                    </button>
+                  </Link>
+                </td>
+                <td className="p-2">
+                  <Link href={`/clientes/${cliente._id}/detalle`}>
+                    <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-1 px-2 rounded w-full">
+                      Detalle
+                    </button>
+                  </Link>
+                </td>
+                <td className="p-2">
+                  <Link href={`/clientes/${cliente._id}/vehiculos`}>
+                    <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-1 px-2 rounded w-full">
+                      Ver Vehículos
                     </button>
                   </Link>
                 </td>

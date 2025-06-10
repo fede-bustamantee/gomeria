@@ -48,10 +48,20 @@ const actualizarCubierta = async (req, res) => {
   }
 };
 
+const obtenerCubiertasPorVehiculo = async (req, res) => {
+  try {
+    const cubiertas = await Cubierta.find({ vehiculoId: req.params.vehiculoId });
+    res.status(200).send(cubiertas);
+  } catch (error) {
+    res.status(500).send({ error: "Error al obtener cubiertas del vehículo", detalles: error.message });
+  }
+};
+
 module.exports = {
   obtenerCubiertas,
   crearCubierta,
   eliminarCubierta,
   obtenerCubiertaPorId,
   actualizarCubierta,
+  obtenerCubiertasPorVehiculo,
 };

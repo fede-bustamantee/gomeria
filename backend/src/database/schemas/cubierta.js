@@ -6,7 +6,7 @@ const Cubierta = new mongoose.Schema({
   medida: String,
   dibujo: String,
   estado: String,
-  posicion: String // ej: "Delantera izquierda"
+  posicion: String,
 }, { timestamps: true });
 
 module.exports = mongoose.model("Cubierta", Cubierta);
