@@ -12,6 +12,7 @@ const RUTAS_CHOFER = require("./src/routes/chofer"); // rutas get/ post/
 const RUTAS_CUBIERTA = require("./src/routes/cubierta"); // rutas get/ post/
 const RUTAS_SERVICIO = require("./src/routes/servicio"); // rutas get/ post/
 const RUTAS_VENTA = require("./src/routes/venta"); // rutas get/ post/
+const RUTAS_FLOTA = require("./src/routes/flota"); // rutas get/ post/
 
 // Instanciacion de EXPRESS(servidor)
 const app = express();
@@ -28,6 +29,7 @@ app.use("/chofer", RUTAS_CHOFER);
 app.use("/cubierta", RUTAS_CUBIERTA);
 app.use("/servicio", RUTAS_SERVICIO);
 app.use("/venta", RUTAS_VENTA);
+app.use("/flota", RUTAS_FLOTA);
 
 // Inicializacion del servidor
 app.listen(process.env.PORT, () => {
