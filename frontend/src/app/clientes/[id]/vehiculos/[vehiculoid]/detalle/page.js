@@ -7,28 +7,36 @@ export default function DetalleVehiculo() {
   const { vehiculoid } = useParams();
   const [vehiculo, setVehiculo] = useState(null);
   const [cubiertas, setCubiertas] = useState([]);
+  const [servicios, setServicios] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const vehiculoRes = await fetch(`/api/vehiculos/${vehiculoid}`);
-        const vehiculoData = await vehiculoRes.json();
-        setVehiculo(vehiculoData);
+  async function fetchData() {
+    try {
+      const vehiculoRes = await fetch(`/api/vehiculos/${vehiculoid}`);
+      const vehiculoData = await vehiculoRes.json();
+      setVehiculo(vehiculoData);
 
-        const cubiertasRes = await fetch(`/api/cubiertas/vehiculo/${vehiculoid}`);
-        const cubiertasData = await cubiertasRes.json();
-        setCubiertas(cubiertasData);
+      const cubiertasRes = await fetch(`/api/cubiertas/vehiculo/${vehiculoid}`);
+      const cubiertasData = await cubiertasRes.json();
+      setCubiertas(cubiertasData);
 
-        setLoading(false);
-      } catch (err) {
-        console.error("Error al obtener los datos:", err);
-        setLoading(false);
-      }
+      // 🔄 Usamos la API de servicios asignados
+      const serviciosRes = await fetch(`/api/asignar-servicio`);
+      const allServicios = await serviciosRes.json();
+      const relacionados = allServicios.filter(s => s.vehiculoId?._id === vehiculoid);
+      setServicios(relacionados);
+
+      setLoading(false);
+    } catch (err) {
+      console.error("Error al obtener los datos:", err);
+      setLoading(false);
     }
+  }
 
-    fetchData();
-  }, [vehiculoid]);
+  fetchData();
+}, [vehiculoid]);
+
 
   if (loading) return <p className="p-4">Cargando...</p>;
   if (!vehiculo) return <p className="p-4">Vehículo no encontrado.</p>;
@@ -57,6 +65,22 @@ export default function DetalleVehiculo() {
               <p><strong>Dibujo:</strong> {cubierta.dibujo}</p>
               <p><strong>Estado:</strong> {cubierta.estado}</p>
               <p><strong>Posición:</strong> {cubierta.posicion}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <h3 className="text-xl font-semibold mt-6 mb-2">Servicios Realizados</h3>
+      {servicios.length === 0 ? (
+        <p>No hay servicios registrados.</p>
+      ) : (
+        <ul className="space-y-3">
+          {servicios.map((s) => (
+            <li key={s._id} className="border p-3 rounded bg-gray-700">
+              <p><strong>Descripción:</strong> {s.descripcion}</p>
+              <p><strong>Tipo:</strong> {s.tipo}</p>
+              <p><strong>Aplicado a:</strong> {s.cubiertaId ? `Cubierta (${s.cubiertaId.posicion})` : "Vehículo general"}</p>
+              <p><strong>Fecha:</strong> {new Date(s.createdAt).toLocaleDateString()}</p>
             </li>
           ))}
         </ul>

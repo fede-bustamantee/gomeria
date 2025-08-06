@@ -6,7 +6,6 @@ const Servicio = new mongoose.Schema({
   descripcion: String,
   tipo: String,
   costo: Number,
-  fecha: Date,
   observaciones: String,
   choferId: { type: mongoose.Schema.Types.ObjectId, ref: "Chofer", default: null }
 }, { timestamps: true });
