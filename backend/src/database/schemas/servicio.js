@@ -7,7 +7,8 @@ const Servicio = new mongoose.Schema({
   tipo: String,
   costo: Number,
   observaciones: String,
-  choferId: { type: mongoose.Schema.Types.ObjectId, ref: "Chofer", default: null }
+  choferId: { type: mongoose.Schema.Types.ObjectId, ref: "Chofer", default: null },
+  flotaId: { type: mongoose.Schema.Types.ObjectId, ref: "Flota", default: null }
 }, { timestamps: true });
 
 module.exports = mongoose.model("Servicio", Servicio);

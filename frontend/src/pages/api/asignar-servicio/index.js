@@ -3,7 +3,11 @@ export default async function handler(req, res) {
 
     if (req.method === "GET") {
         try {
-            const response = await fetch(base);
+            // Tomamos query params del request (ej: ?flotaId=123)
+            const queryParams = new URLSearchParams(req.query).toString();
+            const url = queryParams ? `${base}?${queryParams}` : base;
+
+            const response = await fetch(url);
             const data = await response.json();
 
             if (!Array.isArray(data)) {
